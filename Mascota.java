@@ -2,18 +2,19 @@ public class Mascota {
     private String nombre;
     private String especie;
     private int edad;
-    private double[] controlPeso; // Se usa doble para decimales 0.0
-    private int contador;
+    private double[] controlPeso; // Arreglo para almacenar máximo 10 pesos
+    private int contador;         // Contador de registros válidos realizados
 
     public Mascota(String nombre, String especie, int edad) {
         this.nombre = nombre;
         this.especie = especie;
         this.edad = edad;
-        this.controlPeso = new double[10]; // Ingresar maximo 10 pesos
-        this.contador = 0; // Inicias en 0 registros
+        this.controlPeso = new double[10];
+        this.contador = 0;
     }
 
-    public boolean agregarControlPeso(double peso) {
+    // 1. Agregar nuevo registro de peso
+    public boolean agregarControl(double peso) {
         if (peso <= 0 || contador >= 10) {
             return false;
         }
@@ -22,22 +23,39 @@ public class Mascota {
         return true;
     }
 
-    public double obtenerPesoControl(int numeroControl) {
-        int indice = numeroControl - 1; // Ajuste para índice basado en 0
-        if (indice >= 0 && indice < contador) {
-            return controlPeso[indice];
+    // 2. Imprimir todo el historial de pesos registrados
+    public void mostrarHistorial() {
+        if (contador == 0) {
+            System.out.println("No hay controles de peso registrados.");
+            return;
         }
-        return -1;
+        for (int i = 0; i < contador; i++) {
+            System.out.println("Control #" + (i + 1) + ": " + controlPeso[i] + " kg");
+        }
     }
-    public boolean modificarPesoControl(int numeroControl, double nuevoPeso) {
-        int indice = numeroControl - 1; // Ajuste para indice basado en 0
+
+    // 3. Consultar e imprimir un control específico
+    public void consultarControl(int numeroControl) {
+        int indice = numeroControl - 1;
+        if (indice >= 0 && indice < contador) {
+            System.out.println("Control #" + numeroControl + ": " + controlPeso[indice] + " kg");
+        } else {
+            System.out.println("Error: Numero de control invalido o no registrado aun.");
+        }
+    }
+
+    // 4. Modificar peso de un control existente
+    public boolean modificarControl(int numeroControl, double nuevoPeso) {
+        int indice = numeroControl - 1;
         if (indice >= 0 && indice < contador && nuevoPeso > 0) {
             controlPeso[indice] = nuevoPeso;
             return true;
         }
         return false;
     }
-    public double calcularPromedioPeso() {
+
+    // 5. Calcular promedio de pesos
+    public double calcularPromedio() {
         if (contador == 0) return 0.0;
         double suma = 0;
         for (int i = 0; i < contador; i++) {
@@ -45,7 +63,9 @@ public class Mascota {
         }
         return suma / contador;
     }
-    public double obtenerPesoMaximo() {
+
+    // 6. Obtener peso mayor
+    public double obtenerPesoMayor() {
         if (contador == 0) return 0.0;
         double mayor = controlPeso[0];
         for (int i = 1; i < contador; i++) {
@@ -55,7 +75,9 @@ public class Mascota {
         }
         return mayor;
     }
-    public double obtenerPesoMinimo() {
+
+    // 7. Obtener peso menor
+    public double obtenerPesoMenor() {
         if (contador == 0) return 0.0;
         double menor = controlPeso[0];
         for (int i = 1; i < contador; i++) {
@@ -65,8 +87,9 @@ public class Mascota {
         }
         return menor;
     }
-    
-    public int getControlesRealizados() {
+
+    // 8. Métodos de acceso (Getters) requeridos por el Main
+    public int getTotalControles() {
         return contador;
     }
 
